@@ -1,9 +1,10 @@
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import ClearCart from './ClearCart'
 
 export default async function SuccessPage() {
   return (
     <div className="pt-16 min-h-screen flex items-center justify-center bg-cream">
+      <ClearCart />
       <div className="text-center max-w-md px-4">
         <div className="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-6">
           <svg className="w-8 h-8 text-gold" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
