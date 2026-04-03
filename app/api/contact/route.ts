@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Champs manquants' }, { status: 400 })
   }
 
-  await resend.emails.send({
+  const { data, error } = await resend.emails.send({
     from: 'SophsCraft <onboarding@resend.dev>',
     to: 'simoben10@gmail.com',
     reply_to: email,
@@ -24,5 +24,11 @@ export async function POST(req: NextRequest) {
     `,
   })
 
+  if (error) {
+    console.error('[contact] Resend error:', error)
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  console.log('[contact] Email sent:', data)
   return NextResponse.json({ ok: true })
 }
