@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 56" fill="none">
+  <!-- Gem icon -->
+  <g transform="translate(0, 4)">
+    <polygon points="24,2 34,12 24,34 14,12" stroke="#C9A96E" stroke-width="1" fill="none" stroke-linejoin="round"/>
+    <line x1="14" y1="12" x2="34" y2="12" stroke="#C9A96E" stroke-width="0.8"/>
+    <line x1="19" y1="12" x2="24" y2="34" stroke="#C9A96E" stroke-width="0.5" opacity="0.6"/>
+    <line x1="29" y1="12" x2="24" y2="34" stroke="#C9A96E" stroke-width="0.5" opacity="0.6"/>
+    <line x1="14" y1="12" x2="24" y2="19" stroke="#C9A96E" stroke-width="0.5" opacity="0.6"/>
+    <line x1="34" y1="12" x2="24" y2="19" stroke="#C9A96E" stroke-width="0.5" opacity="0.6"/>
+  </g>
+  <!-- Wordmark -->
+  <text x="48" y="36" font-family="Georgia, 'Times New Roman', serif" font-size="22" letter-spacing="2" fill="#2C2C2C">SophsCraft</text>
+  <!-- Thin line underneath -->
+  <line x1="48" y1="42" x2="176" y2="42" stroke="#C9A96E" stroke-width="0.5" opacity="0.5"/>
+</svg>

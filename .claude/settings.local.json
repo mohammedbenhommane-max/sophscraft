@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e \"const n = require\\(''/Users/mohammedbenhommane/sophscraft/node_modules/next-intl/dist/navigation.react-client.js''\\); console.log\\(Object.keys\\(n\\)\\)\")",
+      "Bash(ls /Users/mohammedbenhommane/sophscraft/app/[locale]/blog/)",
+      "Bash(ls /Users/mohammedbenhommane/sophscraft/public/*.png)",
+      "Bash(ls /Users/mohammedbenhommane/sophscraft/app/[locale]/checkout/)"
+    ]
+  }
+}
