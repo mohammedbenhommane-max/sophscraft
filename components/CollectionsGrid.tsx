@@ -11,6 +11,13 @@ const FALLBACK_GRADIENT: Record<string, string> = {
   bagues: 'from-zinc-700/60 to-stone-900/80',
 }
 
+const FALLBACK_IMAGE: Record<string, string> = {
+  colliers: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&q=80',
+  bracelets: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=500&q=80',
+  'boucles-doreilles': 'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&q=80',
+  bagues: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&q=80',
+}
+
 export default async function CollectionsGrid({ title }: { title?: boolean }) {
   const [collections, t, tHome, locale] = await Promise.all([
     getAllCollections(),
@@ -31,11 +38,13 @@ export default async function CollectionsGrid({ title }: { title?: boolean }) {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {collections.map((col) => {
           const gradient = FALLBACK_GRADIENT[col.slug] ?? 'from-stone-800/60 to-zinc-900/80'
+          const fallbackImg = FALLBACK_IMAGE[col.slug]
+          const imgSrc = col.image ? urlFor(col.image).width(500).url() : fallbackImg
           return (
             <Link key={col.slug} href={`/collections/${col.slug}`} className="group relative aspect-[3/4] overflow-hidden bg-beige">
-              {col.image ? (
+              {imgSrc ? (
                 <Image
-                  src={urlFor(col.image).width(500).url()}
+                  src={imgSrc}
                   alt={locale === 'en' ? col.nameEN : col.nameFR}
                   fill
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
