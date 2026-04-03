@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
   await resend.emails.send({
     from: 'SophsCraft <noreply@sophscraft.com>',
     to: 'contact@sophscraft.com',
-    replyTo: email,
+    reply_to: email,
     subject: `[Sur-mesure] ${jewelryType} — ${name}`,
     html: `
       <h2>Nouvelle demande sur-mesure</h2>

@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   await resend.emails.send({
     from: 'SophsCraft <noreply@sophscraft.com>',
     to: 'contact@sophscraft.com',
-    replyTo: email,
+    reply_to: email,
     subject: `[Contact] ${subject}`,
     html: `
       <p><strong>Nom :</strong> ${name}</p>
