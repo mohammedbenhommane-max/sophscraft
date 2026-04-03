@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
   }
 
   await resend.emails.send({
-    from: 'SophsCraft <onboarding@resend.dev>',
+    from: 'SophsCraft <contact@a2b-consulting.be>',
     to: email,
     subject: 'Bienvenue chez SophsCraft ✨',
     html: `
