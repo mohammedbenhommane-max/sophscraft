@@ -12,8 +12,8 @@ export async function POST(req: NextRequest) {
   }
 
   await resend.emails.send({
-    from: 'SophsCraft <noreply@sophscraft.com>',
-    to: 'contact@sophscraft.com',
+    from: 'SophsCraft <onboarding@resend.dev>',
+    to: 'simoben10@gmail.com',
     reply_to: email,
     subject: `[Sur-mesure] ${jewelryType} — ${name}`,
     html: `
@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   // Confirmation au client
   await resend.emails.send({
-    from: 'SophsCraft <noreply@sophscraft.com>',
+    from: 'SophsCraft <onboarding@resend.dev>',
     to: email,
     subject: 'Votre demande sur-mesure — SophsCraft',
     html: `
