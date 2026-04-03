@@ -74,14 +74,18 @@ const CartContext = createContext<{
 export function CartProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], isOpen: false })
 
-  // Persist to localStorage
+  // Restore from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('sophscraft-cart')
-    if (saved) {
-      const items: CartItem[] = JSON.parse(saved)
-      items.forEach((item) => {
-        dispatch({ type: 'ADD_ITEM', item })
-      })
+    try {
+      const saved = localStorage.getItem('sophscraft-cart')
+      if (saved) {
+        const items: CartItem[] = JSON.parse(saved)
+        if (Array.isArray(items) && items.length > 0) {
+          items.forEach((item) => dispatch({ type: 'ADD_ITEM', item }))
+        }
+      }
+    } catch {
+      localStorage.removeItem('sophscraft-cart')
     }
   }, [])
 

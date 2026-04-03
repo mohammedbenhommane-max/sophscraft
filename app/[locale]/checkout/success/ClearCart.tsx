@@ -7,6 +7,7 @@ export default function ClearCart() {
   const { dispatch } = useCart()
 
   useEffect(() => {
+    localStorage.removeItem('sophscraft-cart')
     dispatch({ type: 'CLEAR' })
   }, [dispatch])
 
