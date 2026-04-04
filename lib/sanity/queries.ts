@@ -95,7 +95,7 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
   return sanityClient.fetch(
     `*[_type == "blogPost"] | order(publishedAt desc) { ${BLOG_FIELDS} }`,
     {},
-    { next: { tags: ['blogPost'] } }
+    { next: { revalidate: 60, tags: ['blogPost'] } }
   )
 }
 
@@ -107,7 +107,7 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       bodyEN
     }`,
     { slug },
-    { next: { tags: [`blogPost:${slug}`] } }
+    { next: { revalidate: 60, tags: [`blogPost:${slug}`] } }
   )
 }
 

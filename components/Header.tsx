@@ -26,7 +26,7 @@ export default function Header() {
 
   function switchLocale() {
     const next = locale === 'fr' ? 'en' : 'fr'
-    router.replace(pathname, { locale: next })
+    router.push(pathname || '/', { locale: next })
   }
 
   return (
