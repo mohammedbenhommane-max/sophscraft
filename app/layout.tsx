@@ -38,10 +38,27 @@ export const metadata: Metadata = {
   },
 }
 
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'SophsCraft',
+  url: 'https://sophscraft.com',
+  logo: 'https://sophscraft.com/images/logo.png',
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'contact@sophscraft.com',
+    contactType: 'customer service',
+  },
+  sameAs: [],
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${playfair.variable} ${inter.variable}`}>
-      <body>{children}</body>
+      <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        {children}
+      </body>
     </html>
   )
 }

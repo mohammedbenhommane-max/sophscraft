@@ -20,7 +20,23 @@ function formatDate(dateStr: string, locale: string) {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = await getBlogPostBySlug(params.slug)
   if (!post) return { title: 'Article introuvable' }
-  return { title: `${params.locale === 'en' ? post.titleEN : post.titleFR} — SophsCraft` }
+  const title = params.locale === 'en' ? post.titleEN : post.titleFR
+  const description =
+    params.locale === 'en'
+      ? `Read "${title}" on the SophsCraft blog — handmade jewelry inspirations, events and press.`
+      : `Lire "${title}" sur le blog SophsCraft — inspirations bijoux, événements et presse.`
+  const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).url() : undefined
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: 'article',
+      ...(post.publishedAt && { publishedTime: post.publishedAt }),
+      ...(imageUrl && { images: [{ url: imageUrl, width: 1200, height: 630, alt: title }] }),
+    },
+  }
 }
 
 export default async function BlogPostPage({ params }: Props) {
@@ -38,8 +54,24 @@ export default async function BlogPostPage({ params }: Props) {
         : post.category)
     : null
 
+  const coverImageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).url() : undefined
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: title,
+    ...(coverImageUrl && { image: coverImageUrl }),
+    ...(post.publishedAt && { datePublished: post.publishedAt }),
+    author: { '@type': 'Organization', name: 'SophsCraft' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'SophsCraft',
+      logo: { '@type': 'ImageObject', url: 'https://sophscraft.com/images/logo.png' },
+    },
+  }
+
   return (
     <div className="pt-16 min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {post.coverImage && (
         <div className="relative h-[50vh] w-full overflow-hidden bg-beige">
           <Image

@@ -15,8 +15,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(params.slug)
   if (!product) return { title: 'Produit introuvable' }
+  const name = params.locale === 'en' ? product.nameEN : product.nameFR
+  const description =
+    params.locale === 'en'
+      ? `${name} — Handmade artisan jewelry by SophsCraft. Price: ${product.price.toFixed(2)} €`
+      : `${name} — Bijou artisanal fait main par SophsCraft. Prix : ${product.price.toFixed(2)} €`
+  const imageUrl = product.images?.[0] ? urlFor(product.images[0]).width(1200).url() : undefined
   return {
-    title: params.locale === 'en' ? product.nameEN : product.nameFR,
+    title: name,
+    description,
+    openGraph: {
+      title: name,
+      description,
+      type: 'website',
+      ...(imageUrl && { images: [{ url: imageUrl, width: 1200, height: 1200, alt: name }] }),
+    },
   }
 }
 
@@ -43,8 +56,26 @@ export default async function ProductPage({ params }: Props) {
     isSoldOut: product.isSoldOut,
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name,
+    image: imageUrls,
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: 'EUR',
+      availability: product.isSoldOut
+        ? 'https://schema.org/SoldOut'
+        : 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'SophsCraft' },
+    },
+    brand: { '@type': 'Brand', name: 'SophsCraft' },
+  }
+
   return (
     <div className="pt-16 min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-6xl mx-auto px-4 py-16">
         <nav className="mb-8 text-xs text-muted uppercase tracking-widest flex gap-2 items-center">
           <Link href="/collections" className="hover:text-gold transition-colors">Collections</Link>

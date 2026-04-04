@@ -12,8 +12,21 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const collection = await getCollectionBySlug(params.slug)
   if (!collection) return { title: 'Collection introuvable' }
+  const name = params.locale === 'en' ? collection.nameEN : collection.nameFR
+  const description =
+    collection.description ??
+    (params.locale === 'en'
+      ? `Discover our ${name} collection — handmade artisan jewelry by SophsCraft.`
+      : `Découvrez notre collection ${name} — bijoux artisanaux faits main par SophsCraft.`)
+  const imageUrl = collection.image ? urlFor(collection.image).width(1200).url() : undefined
   return {
-    title: params.locale === 'en' ? collection.nameEN : collection.nameFR,
+    title: name,
+    description,
+    openGraph: {
+      title: name,
+      description,
+      ...(imageUrl && { images: [{ url: imageUrl, width: 1200, height: 630, alt: name }] }),
+    },
   }
 }
 
