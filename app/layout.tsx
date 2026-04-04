@@ -52,11 +52,29 @@ const organizationJsonLd = {
   sameAs: [],
 }
 
+const localBusinessJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'JewelryStore',
+  name: 'SophsCraft',
+  url: 'https://sophscraft.com',
+  image: 'https://sophscraft.com/images/logo.png',
+  description: 'Bijoux artisanaux faits main. Chaque pièce est unique, créée avec amour et précision.',
+  address: {
+    '@type': 'PostalAddress',
+    addressCountry: 'BE',
+  },
+  priceRange: '€€',
+  currenciesAccepted: 'EUR',
+  paymentAccepted: 'Credit Card',
+  openingHours: 'Mo-Su 00:00-23:59',
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${playfair.variable} ${inter.variable}`}>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }} />
         {children}
       </body>
     </html>

@@ -7,10 +7,18 @@ import Footer from '@/components/Footer'
 import CartSidebar from '@/components/CartSidebar'
 
 const locales = ['fr', 'en']
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sophscraft.com'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
   const t = await getTranslations({ locale, namespace: 'footer' })
-  return { description: t('tagline') }
+  const canonical = locale === 'fr' ? BASE_URL : `${BASE_URL}/en`
+  return {
+    description: t('tagline'),
+    alternates: {
+      canonical,
+      languages: { fr: BASE_URL, en: `${BASE_URL}/en` },
+    },
+  }
 }
 
 export default async function LocaleLayout({

@@ -21,9 +21,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `${name} — Handmade artisan jewelry by SophsCraft. Price: ${product.price.toFixed(2)} €`
       : `${name} — Bijou artisanal fait main par SophsCraft. Prix : ${product.price.toFixed(2)} €`
   const imageUrl = product.images?.[0] ? urlFor(product.images[0]).width(1200).url() : undefined
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sophscraft.com'
+  const frUrl = `${base}/products/${params.slug}`
+  const enUrl = `${base}/en/products/${params.slug}`
   return {
     title: name,
     description,
+    alternates: {
+      canonical: params.locale === 'fr' ? frUrl : enUrl,
+      languages: { fr: frUrl, en: enUrl },
+    },
     openGraph: {
       title: name,
       description,
@@ -56,6 +63,17 @@ export default async function ProductPage({ params }: Props) {
     isSoldOut: product.isSoldOut,
   }
 
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sophscraft.com'
+  const breadcrumbJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Collections', item: `${base}/collections` },
+      { '@type': 'ListItem', position: 2, name: collectionName ?? collectionSlug, item: `${base}/collections/${collectionSlug}` },
+      { '@type': 'ListItem', position: 3, name, item: `${base}/products/${product.slug}` },
+    ],
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -75,6 +93,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <div className="pt-16 min-h-screen">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <div className="max-w-6xl mx-auto px-4 py-16">
         <nav className="mb-8 text-xs text-muted uppercase tracking-widest flex gap-2 items-center">

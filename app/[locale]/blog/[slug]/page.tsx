@@ -26,9 +26,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? `Read "${title}" on the SophsCraft blog — handmade jewelry inspirations, events and press.`
       : `Lire "${title}" sur le blog SophsCraft — inspirations bijoux, événements et presse.`
   const imageUrl = post.coverImage ? urlFor(post.coverImage).width(1200).url() : undefined
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://sophscraft.com'
+  const frUrl = `${base}/blog/${params.slug}`
+  const enUrl = `${base}/en/blog/${params.slug}`
   return {
     title,
     description,
+    alternates: {
+      canonical: params.locale === 'fr' ? frUrl : enUrl,
+      languages: { fr: frUrl, en: enUrl },
+    },
     openGraph: {
       title,
       description,
