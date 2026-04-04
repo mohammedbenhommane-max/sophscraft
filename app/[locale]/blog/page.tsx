@@ -5,6 +5,8 @@ import { getTranslations } from 'next-intl/server'
 import { getAllBlogPosts } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
+export const revalidate = 60
+
 export const metadata: Metadata = {
   title: 'Blog — SophsCraft',
 }
