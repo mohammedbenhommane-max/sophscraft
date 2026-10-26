@@ -1,4 +1,5 @@
 import createNextIntlPlugin from 'next-intl/plugin'
+import { shopifyRedirects } from './shopify-redirects.mjs'
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
@@ -12,6 +13,9 @@ const nextConfig = {
     ],
   },
   poweredByHeader: false,
+  async redirects() {
+    return shopifyRedirects
+  },
   async headers() {
     return [
       {
