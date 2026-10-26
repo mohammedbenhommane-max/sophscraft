@@ -6,7 +6,9 @@ export const maxDuration = 30
 
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!
 const OPENAI_MODEL = process.env.OPENAI_MODEL ?? 'gpt-4o-mini'
-const MAX_IMAGE_LENGTH = 4_000_000 // data URL d'environ 3 Mo
+const MAX_IMAGES = 4
+const MAX_IMAGES_LENGTH = 4_000_000 // total des data URL, sous la limite de 4,5 Mo de Vercel
+const MAX_INSTRUCTION_LENGTH = 500
 const ALLOWED_ROLES = ['administrator', 'editor']
 
 type ProductRow = { nameFR: string; price: number; collection: string | null }
@@ -20,6 +22,13 @@ export type ProductSuggestion = {
   collectionSlug: string
   price: number
   priceReason: string
+}
+
+type SuggestBody = {
+  images?: unknown
+  // Fiche actuelle + demande de modification (ex. « description plus courte »)
+  current?: Partial<ProductSuggestion>
+  instruction?: unknown
 }
 
 // Seuls les membres du projet Sanity connectés au Studio peuvent utiliser l'IA
@@ -58,26 +67,42 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'OPENAI_API_KEY manquant dans Vercel' }, { status: 500 })
   }
 
-  const { image } = await req.json()
-  if (typeof image !== 'string' || !image.startsWith('data:image/') || image.length > MAX_IMAGE_LENGTH) {
-    return NextResponse.json({ error: 'Image invalide' }, { status: 400 })
+  const { images, current, instruction }: SuggestBody = await req.json()
+  const validImages =
+    Array.isArray(images) &&
+    images.length >= 1 &&
+    images.length <= MAX_IMAGES &&
+    images.every((img) => typeof img === 'string' && img.startsWith('data:image/')) &&
+    images.join('').length <= MAX_IMAGES_LENGTH
+  if (!validImages) {
+    return NextResponse.json({ error: `Entre 1 et ${MAX_IMAGES} photos (JPEG ou PNG)` }, { status: 400 })
   }
+  const request = typeof instruction === 'string' ? instruction.trim().slice(0, MAX_INSTRUCTION_LENGTH) : ''
 
   const [products, collections]: [ProductRow[], CollectionRow[]] = await Promise.all([
     sanityClient.fetch(`*[_type == "product" && defined(price)]{ nameFR, price, "collection": collection->slug.current }`),
     sanityClient.fetch(`*[_type == "collection"]{ "slug": slug.current, nameFR }`),
   ])
 
-  const instructions = `Tu aides SophsCraft, une créatrice belge de bijoux artisanaux faits main, à mettre en ligne un nouveau bijou à partir d'une photo.
+  const instructions = `Tu aides SophsCraft, une créatrice belge de bijoux artisanaux faits main, à mettre en ligne un nouveau bijou à partir de photos (plusieurs angles du même bijou).
 
 Propose :
 - un nom court et élégant en français et en anglais, dans le style de la boutique (ex. « Collier Louiza - Élégance en Quartz Rose »), 60 caractères maximum, sans le mot SophsCraft ;
-- une description de 2 à 3 phrases en français et en anglais : matières et pierres visibles, style, occasion. N'invente pas de détail invisible sur la photo (taille, poids, type de métal exact) : reste prudent (« teinte dorée », « pierres semi-précieuses ») ;
+- une description de 2 à 3 phrases en français et en anglais : matières et pierres visibles, style, occasion. N'invente pas de détail invisible sur les photos (taille, poids, type de métal exact) : reste prudent (« teinte dorée », « pierres semi-précieuses ») ;
 - la collection la plus adaptée parmi les slugs ci-dessous ;
 - un prix en euros cohérent avec les prix actuels de cette collection, et une courte justification.
 
+Si une fiche actuelle et une demande de modification sont fournies, applique la demande à la fiche actuelle : ne change que ce qui est demandé (ou ce qui en découle, ex. la traduction anglaise d'un texte français modifié) et garde le reste à l'identique. Les informations données par la créatrice (matière, pierre, prix…) priment sur ce que tu vois.
+
 Collections et prix actuels :
 ${priceContext(products, collections)}`
+
+  const userText =
+    current && request
+      ? `Fiche actuelle :\n${JSON.stringify(current, null, 2)}\n\nDemande de modification : ${request}`
+      : request
+        ? `Photos du nouveau bijou. Précision de la créatrice : ${request}`
+        : 'Photos du nouveau bijou.'
 
   const res = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -92,8 +117,8 @@ ${priceContext(products, collections)}`
         {
           role: 'user',
           content: [
-            { type: 'text', text: 'Voici la photo du nouveau bijou.' },
-            { type: 'image_url', image_url: { url: image } },
+            { type: 'text', text: userText },
+            ...(images as string[]).map((url) => ({ type: 'image_url', image_url: { url } })),
           ],
         },
       ],
@@ -123,7 +148,7 @@ ${priceContext(products, collections)}`
 
   if (!res.ok) {
     console.error('[studio/suggest] OpenAI error:', res.status, await res.text())
-    return NextResponse.json({ error: "L'IA n'a pas pu analyser la photo" }, { status: 502 })
+    return NextResponse.json({ error: "L'IA n'a pas pu analyser les photos" }, { status: 502 })
   }
 
   const data = await res.json()
