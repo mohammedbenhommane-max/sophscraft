@@ -1,9 +1,10 @@
 import { getTranslations } from 'next-intl/server'
 import type { Metadata } from 'next'
+import { localeAlternates } from '@/lib/seo'
 import CollectionsGrid from '@/components/CollectionsGrid'
 
-export async function generateMetadata(): Promise<Metadata> {
-  return { title: 'Collections' }
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  return { title: 'Collections', alternates: localeAlternates(locale, '/collections') }
 }
 
 export default async function CollectionsPage() {

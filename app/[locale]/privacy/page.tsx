@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
+import { localeAlternates } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Politique de confidentialité — SophsCraft',
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  return { title: 'Politique de confidentialité', alternates: localeAlternates(locale, '/privacy') }
 }
 
 export default function PrivacyPage() {

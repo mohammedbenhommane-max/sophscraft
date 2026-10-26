@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
+import { localeAlternates } from '@/lib/seo'
 
-export const metadata: Metadata = {
-  title: 'Conditions Générales de Vente — SophsCraft',
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  return { title: 'Conditions Générales de Vente', alternates: localeAlternates(locale, '/cgv') }
 }
 
 export default function CGVPage() {

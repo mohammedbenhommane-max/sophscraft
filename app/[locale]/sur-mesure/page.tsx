@@ -1,8 +1,11 @@
 import type { Metadata } from 'next'
+import { localeAlternates } from '@/lib/seo'
 import { getTranslations } from 'next-intl/server'
 import CustomOrderForm from './CustomOrderForm'
 
-export const metadata: Metadata = { title: 'Sur-mesure — SophsCraft' }
+export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+  return { title: 'Sur-mesure', alternates: localeAlternates(locale, '/sur-mesure') }
+}
 
 export default async function SurMesurePage() {
   const t = await getTranslations('custom')
