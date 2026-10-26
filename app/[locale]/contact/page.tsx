@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
+import { SOCIAL_LINKS } from '@/lib/social'
 import { getTranslations } from 'next-intl/server'
 import ContactForm from './ContactForm'
 
@@ -35,8 +36,7 @@ export default async function ContactPage() {
             <div>
               <h3 className="text-xs uppercase tracking-widest text-gold mb-4">{t('socialLabel')}</h3>
               <div className="flex gap-5">
-                <a href="https://instagram.com/sophscraft" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-gold transition-colors text-sm">Instagram</a>
-                <a href="https://tiktok.com/@sophscraft" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-gold transition-colors text-sm">TikTok</a>
+                <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-gold transition-colors text-sm">Instagram</a>
               </div>
             </div>
             <div>
