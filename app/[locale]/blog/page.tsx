@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
@@ -9,7 +9,7 @@ import { urlFor } from '@/lib/sanity/image'
 export const revalidate = 60
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Blog', alternates: localeAlternates(locale, '/blog') }
+  return staticPageMetadata(locale, '/blog', 'Blog')
 }
 
 type Props = { params: { locale: string } }

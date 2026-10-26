@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Rendez-vous', alternates: localeAlternates(locale, '/rendez-vous') }
+  return staticPageMetadata(locale, '/rendez-vous', 'Rendez-vous')
 }
 
 export default async function RendezVousPage() {

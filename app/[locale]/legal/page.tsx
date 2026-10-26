@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Mentions légales', alternates: localeAlternates(locale, '/legal') }
+  return staticPageMetadata(locale, '/legal', 'Mentions légales')
 }
 
 export default function LegalPage() {

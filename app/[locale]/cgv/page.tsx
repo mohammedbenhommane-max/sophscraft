@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Conditions Générales de Vente', alternates: localeAlternates(locale, '/cgv') }
+  return staticPageMetadata(locale, '/cgv', 'Conditions Générales de Vente')
 }
 
 export default function CGVPage() {

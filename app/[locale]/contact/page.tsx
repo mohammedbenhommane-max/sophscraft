@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 import { getTranslations } from 'next-intl/server'
 import ContactForm from './ContactForm'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Contact', alternates: localeAlternates(locale, '/contact') }
+  return staticPageMetadata(locale, '/contact', 'Contact')
 }
 
 export default async function ContactPage() {

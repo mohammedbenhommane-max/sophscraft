@@ -6,6 +6,7 @@ import type { Metadata } from 'next'
 import { PortableText } from '@portabletext/react'
 import { getProductBySlug } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
+import { cleanProductName } from '@/lib/seo'
 import AddToCartButton from './AddToCartButton'
 
 type Props = {
@@ -15,7 +16,7 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const product = await getProductBySlug(params.slug)
   if (!product) return { title: 'Produit introuvable' }
-  const name = params.locale === 'en' ? product.nameEN : product.nameFR
+  const name = cleanProductName(params.locale === 'en' ? product.nameEN : product.nameFR)
   const description =
     params.locale === 'en'
       ? `${name} — Handmade artisan jewelry by SophsCraft. Price: ${product.price.toFixed(2)} €`

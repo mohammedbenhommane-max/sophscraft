@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import { localeAlternates } from '@/lib/seo'
+import { staticPageMetadata } from '@/lib/seo'
 import { getTranslations } from 'next-intl/server'
 import CustomOrderForm from './CustomOrderForm'
 
 export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
-  return { title: 'Sur-mesure', alternates: localeAlternates(locale, '/sur-mesure') }
+  return staticPageMetadata(locale, '/sur-mesure', 'Sur-mesure')
 }
 
 export default async function SurMesurePage() {
