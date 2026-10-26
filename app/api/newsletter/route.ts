@@ -17,6 +17,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Email requis' }, { status: 400 })
   }
 
+  // Inscrit enregistré dans l'Audience Resend (désinscription gérée par Resend)
+  const audienceId = process.env.RESEND_AUDIENCE_ID
+  if (audienceId) {
+    const { error } = await resend.contacts.create({ audienceId, email, unsubscribed: false })
+    if (error) console.error('[newsletter] Resend contact error:', error)
+  } else {
+    console.error('[newsletter] RESEND_AUDIENCE_ID manquant : inscrit non enregistré')
+  }
+
   await resend.emails.send({
     from: 'SophsCraft <contact@a2b-consulting.be>',
     to: email,
