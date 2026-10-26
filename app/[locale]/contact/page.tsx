@@ -37,6 +37,7 @@ export default async function ContactPage() {
               <h3 className="text-xs uppercase tracking-widest text-gold mb-4">{t('socialLabel')}</h3>
               <div className="flex gap-5">
                 <a href={SOCIAL_LINKS.instagram} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-gold transition-colors text-sm">Instagram</a>
+                <a href={SOCIAL_LINKS.facebook} target="_blank" rel="noopener noreferrer" className="text-muted hover:text-gold transition-colors text-sm">Facebook</a>
               </div>
             </div>
             <div>
