@@ -1,3 +1,4 @@
+import { setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 
@@ -6,11 +7,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return staticPageMetadata(locale, '/cgv', 'Conditions Générales de Vente')
 }
 
-export default function CGVPage() {
+export default async function CGVPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   return (
     <div className="pt-16 min-h-screen">
       <div className="max-w-3xl mx-auto px-4 py-20">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">Transparence</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">Transparence</p>
         <h1 className="font-serif text-4xl text-charcoal mb-12">
           Conditions Générales de Vente
         </h1>
@@ -63,17 +65,17 @@ export default function CGVPage() {
           <section>
             <h2 className="font-serif text-xl text-charcoal mb-3">Article 6 — Livraison</h2>
             <p>
-              Les commandes sont expédiées sous 3 à 5 jours ouvrés. En cas de retard, l&apos;Acheteur
-              en sera informé par email. Les frais de livraison sont indiqués lors du passage de
-              commande.
+              La livraison est offerte dans toute l&apos;Europe. Les commandes sont livrées en 3 à 4
+              jours ouvrés. En cas de retard, l&apos;Acheteur en sera informé par email.
             </p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-charcoal mb-3">Article 7 — Droit de rétractation</h2>
             <p>
-              Conformément à la législation européenne, l&apos;Acheteur dispose d&apos;un délai de 14 jours
-              à compter de la réception pour exercer son droit de rétractation, sans justification.
+              L&apos;Acheteur dispose d&apos;un délai de 30 jours à compter de la réception pour exercer
+              son droit de rétractation, sans justification (au-delà des 14 jours prévus par la
+              législation européenne).
               Les bijoux sur-mesure sont exclus de ce droit conformément à l&apos;article L221-28 du
               Code de la consommation.
             </p>
@@ -83,7 +85,8 @@ export default function CGVPage() {
             <h2 className="font-serif text-xl text-charcoal mb-3">Article 8 — Retours</h2>
             <p>
               En cas de rétractation, les produits doivent être retournés dans leur état d&apos;origine
-              sous 14 jours. Les frais de retour sont à la charge de l&apos;Acheteur. Le remboursement
+              dans les 30 jours suivant la réception. Les frais de retour sont à la charge de
+              l&apos;Acheteur. Le remboursement
               est effectué dans les 14 jours suivant la réception du retour.
             </p>
           </section>

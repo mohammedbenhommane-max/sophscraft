@@ -14,6 +14,8 @@ const config: Config = {
         gold: '#C9A96E',
         'gold-light': '#E8D5B0',
         'gold-dark': '#A07840',
+        // Doré lisible pour les petits textes sur fond clair (contraste 4,9:1 sur cream)
+        'gold-ink': '#8A6534',
         charcoal: '#2C2C2C',
         muted: '#6B6560',
       },
@@ -24,11 +26,16 @@ const config: Config = {
       animation: {
         'fade-in': 'fadeIn 0.6s ease-out',
         'slide-in': 'slideIn 0.4s ease-out',
+        'hero-rise': 'heroRise 1s ease-out both',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0', transform: 'translateY(8px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        heroRise: {
+          '0%': { transform: 'translateY(1.5rem)' },
+          '100%': { transform: 'translateY(0)' },
         },
         slideIn: {
           '0%': { transform: 'translateX(100%)' },

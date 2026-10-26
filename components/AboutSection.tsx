@@ -32,7 +32,7 @@ export default async function AboutSection() {
 
           {/* Texte */}
           <div className="order-1 lg:order-2">
-            <p className="text-gold text-xs uppercase tracking-[0.3em] mb-4">{t('tag')}</p>
+            <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-4">{t('tag')}</p>
             <h2 className="font-serif text-4xl lg:text-5xl text-charcoal leading-tight mb-8">
               {t('title').split('\n').map((line, i) => (
                 <span key={i} className="block">{line}</span>

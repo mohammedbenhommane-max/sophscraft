@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import CustomOrderForm from './CustomOrderForm'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -8,13 +8,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return staticPageMetadata(locale, '/sur-mesure', 'Sur-mesure')
 }
 
-export default async function SurMesurePage() {
+export default async function SurMesurePage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   const t = await getTranslations('custom')
 
   return (
     <div className="pt-16 min-h-screen">
       <div className="bg-beige/40 py-20 px-4 text-center">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
         <h1 className="font-serif text-5xl text-charcoal mb-6">{t('title')}</h1>
         <p className="text-muted text-sm max-w-lg mx-auto leading-relaxed">{t('subtitle')}</p>
       </div>
@@ -36,7 +37,7 @@ export default async function SurMesurePage() {
 
         <div className="max-w-2xl mx-auto">
           <div className="text-center mb-10">
-            <p className="text-gold text-xs uppercase tracking-widest mb-2">{t('formTag')}</p>
+            <p className="text-gold-ink text-xs uppercase tracking-widest mb-2">{t('formTag')}</p>
             <h2 className="font-serif text-3xl text-charcoal">{t('formTitle')}</h2>
           </div>
           <CustomOrderForm />

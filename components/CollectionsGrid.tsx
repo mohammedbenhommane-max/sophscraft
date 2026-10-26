@@ -30,7 +30,7 @@ export default async function CollectionsGrid({ title }: { title?: boolean }) {
     <section className="py-24 px-4 max-w-7xl mx-auto">
       {title && (
         <div className="text-center mb-14">
-          <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{tHome('subtitle')}</p>
+          <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{tHome('subtitle')}</p>
           <h2 className="font-serif text-4xl text-charcoal">{tHome('title')}</h2>
         </div>
       )}

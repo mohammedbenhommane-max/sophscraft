@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import { getAllProducts } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
@@ -8,7 +8,11 @@ import CollectionsGrid from '@/components/CollectionsGrid'
 import AboutSection from '@/components/AboutSection'
 import NewsletterSection from '@/components/NewsletterSection'
 
-export default async function HomePage() {
+// Page mise en cache, régénérée au plus toutes les 60 s (contenu Sanity)
+export const revalidate = 60
+
+export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   const t = await getTranslations('home.explore')
 
   const allProducts = await getAllProducts()
@@ -32,7 +36,7 @@ export default async function HomePage() {
       {/* Section "Let's Explore" */}
       <section className="py-24 px-4 max-w-7xl mx-auto">
         <div className="text-center mb-14">
-          <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('subtitle')}</p>
+          <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('subtitle')}</p>
           <h2 className="font-serif text-4xl text-charcoal">{t('title')}</h2>
         </div>
 

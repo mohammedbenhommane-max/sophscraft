@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 import { SOCIAL_LINKS } from '@/lib/social'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import ContactForm from './ContactForm'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
@@ -9,14 +9,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return staticPageMetadata(locale, '/contact', 'Contact')
 }
 
-export default async function ContactPage() {
+export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   const t = await getTranslations('contact')
 
   return (
     <div className="pt-16 min-h-screen">
       <div className="max-w-5xl mx-auto px-4 py-20">
         <div className="text-center mb-16">
-          <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
+          <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
           <h1 className="font-serif text-5xl text-charcoal mb-6">{t('title')}</h1>
           <p className="text-muted text-sm max-w-md mx-auto leading-relaxed">{t('subtitle')}</p>
         </div>

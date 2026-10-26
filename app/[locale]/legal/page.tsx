@@ -1,3 +1,4 @@
+import { setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 
@@ -6,11 +7,12 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return staticPageMetadata(locale, '/legal', 'Mentions légales')
 }
 
-export default function LegalPage() {
+export default async function LegalPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   return (
     <div className="pt-16 min-h-screen">
       <div className="max-w-3xl mx-auto px-4 py-20">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">Transparence</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">Transparence</p>
         <h1 className="font-serif text-4xl text-charcoal mb-12">Mentions légales</h1>
 
         <div className="prose prose-sm max-w-none text-muted space-y-10">

@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { getAllBlogPosts } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
@@ -25,13 +25,14 @@ function formatDate(dateStr: string, locale: string) {
 
 export default async function BlogPage({ params: paramsPromise }: Props) {
   const params = await paramsPromise
+  setRequestLocale(params.locale)
   const { locale } = params
   const [posts, t] = await Promise.all([getAllBlogPosts(), getTranslations('blog')])
 
   return (
     <div className="pt-16 min-h-screen">
       <div className="bg-beige/40 py-20 px-4 text-center">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
         <h1 className="font-serif text-5xl text-charcoal">{t('title')}</h1>
       </div>
 
@@ -76,7 +77,7 @@ export default async function BlogPage({ params: paramsPromise }: Props) {
 
                   <div className="flex items-center gap-3 mb-2">
                     {categoryLabel && (
-                      <span className="text-gold text-[10px] uppercase tracking-widest">{categoryLabel}</span>
+                      <span className="text-gold-ink text-[10px] uppercase tracking-widest">{categoryLabel}</span>
                     )}
                     {post.publishedAt && (
                       <>

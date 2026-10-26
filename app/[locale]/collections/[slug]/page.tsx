@@ -1,9 +1,17 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getCollectionBySlug, getProductsByCollection } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 import CollectionFilter from '@/components/CollectionFilter'
+
+// Page mise en cache, régénérée au plus toutes les 60 s (contenu Sanity)
+export const revalidate = 60
+
+// Aucune page générée au build : chacune est créée à la première visite puis mise en cache
+export function generateStaticParams() {
+  return []
+}
 
 type Props = {
   params: Promise<{ slug: string; locale: string }>
@@ -45,6 +53,7 @@ export async function generateMetadata({ params: paramsPromise }: Props): Promis
 
 export default async function CollectionPage({ params: paramsPromise }: Props) {
   const params = await paramsPromise
+  setRequestLocale(params.locale)
   const { slug, locale } = params
   const t = await getTranslations('collections')
 
@@ -71,7 +80,7 @@ export default async function CollectionPage({ params: paramsPromise }: Props) {
     <div className="pt-16">
       {/* Header */}
       <div className="bg-beige/40 py-20 text-center">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('title')}</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('title')}</p>
         <h1 className="font-serif text-5xl text-charcoal">{collectionName}</h1>
         {collection.description && (
           <p className="text-muted text-sm mt-3 max-w-md mx-auto">{collection.description}</p>

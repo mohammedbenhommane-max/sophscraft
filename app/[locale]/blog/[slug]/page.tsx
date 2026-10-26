@@ -2,10 +2,18 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import { PortableText } from '@portabletext/react'
 import { getBlogPostBySlug } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
+
+// Page mise en cache, régénérée au plus toutes les 60 s (contenu Sanity)
+export const revalidate = 60
+
+// Aucune page générée au build : chacune est créée à la première visite puis mise en cache
+export function generateStaticParams() {
+  return []
+}
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
@@ -49,6 +57,7 @@ export async function generateMetadata({ params: paramsPromise }: Props): Promis
 
 export default async function BlogPostPage({ params: paramsPromise }: Props) {
   const params = await paramsPromise
+  setRequestLocale(params.locale)
   const { slug, locale } = params
   const [post, t] = await Promise.all([getBlogPostBySlug(slug), getTranslations('blog')])
   if (!post) notFound()

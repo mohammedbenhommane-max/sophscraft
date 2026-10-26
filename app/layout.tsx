@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { Playfair_Display, Inter } from 'next/font/google'
+import { Analytics } from '@vercel/analytics/next'
 import { SOCIAL_LINKS } from '@/lib/social'
 import './globals.css'
 
@@ -80,6 +81,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }} />
         {children}
+        {/* Statistiques de visite Vercel : sans cookies, donc sans bandeau de consentement */}
+        <Analytics />
       </body>
     </html>
   )

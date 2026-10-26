@@ -1,5 +1,5 @@
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages } from 'next-intl/server'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { CartProvider } from '@/lib/cart-context'
 import { staticPageMetadata } from '@/lib/seo'
@@ -8,6 +8,11 @@ import Footer from '@/components/Footer'
 import CartSidebar from '@/components/CartSidebar'
 
 const locales = ['fr', 'en']
+
+// Pages pré-générées pour chaque langue, puis servies depuis le cache
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }))
+}
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
@@ -26,6 +31,7 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params
   if (!locales.includes(locale)) notFound()
+  setRequestLocale(locale)
 
   const messages = await getMessages()
 

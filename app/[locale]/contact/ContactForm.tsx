@@ -30,7 +30,7 @@ export default function ContactForm() {
   if (status === 'success') {
     return (
       <div className="py-16 text-center">
-        <p className="text-gold text-xs uppercase tracking-widest mb-3">{t('successTag')}</p>
+        <p className="text-gold-ink text-xs uppercase tracking-widest mb-3">{t('successTag')}</p>
         <p className="font-serif text-2xl text-charcoal mb-4">{t('successTitle', { name: form.name })}</p>
         <p className="text-muted text-sm">{t('successText', { email: form.email })}</p>
       </div>

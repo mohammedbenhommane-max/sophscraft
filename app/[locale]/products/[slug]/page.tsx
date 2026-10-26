@@ -1,13 +1,22 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { PortableText } from '@portabletext/react'
 import { getProductBySlug } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
-import { cleanProductName } from '@/lib/seo'
+import { cleanProductName, portableTextToPlain } from '@/lib/seo'
+import { merchantReturnPolicy, offerShippingDetails } from '@/lib/shop'
 import AddToCartButton from './AddToCartButton'
+
+// Page mise en cache, régénérée au plus toutes les 60 s (contenu Sanity)
+export const revalidate = 60
+
+// Aucune page générée au build : chacune est créée à la première visite puis mise en cache
+export function generateStaticParams() {
+  return []
+}
 
 type Props = {
   params: Promise<{ slug: string; locale: string }>
@@ -44,6 +53,7 @@ export async function generateMetadata({ params: paramsPromise }: Props): Promis
 
 export default async function ProductPage({ params: paramsPromise }: Props) {
   const params = await paramsPromise
+  setRequestLocale(params.locale)
   const { slug, locale } = params
   const t = await getTranslations('product')
 
@@ -77,19 +87,27 @@ export default async function ProductPage({ params: paramsPromise }: Props) {
     ],
   }
 
+  const productUrl = `${base}${locale === 'en' ? '/en' : ''}/products/${product.slug}`
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name,
+    name: cleanProductName(name),
+    description: portableTextToPlain(description) || undefined,
+    sku: product._id,
+    url: productUrl,
     image: imageUrls,
     offers: {
       '@type': 'Offer',
+      url: productUrl,
       price: product.price,
       priceCurrency: 'EUR',
       availability: product.isSoldOut
         ? 'https://schema.org/SoldOut'
         : 'https://schema.org/InStock',
+      itemCondition: 'https://schema.org/NewCondition',
       seller: { '@type': 'Organization', name: 'SophsCraft' },
+      shippingDetails: offerShippingDetails,
+      hasMerchantReturnPolicy: merchantReturnPolicy,
     },
     brand: { '@type': 'Brand', name: 'SophsCraft' },
   }
@@ -139,7 +157,7 @@ export default async function ProductPage({ params: paramsPromise }: Props) {
           {/* Infos produit */}
           <div className="lg:sticky lg:top-24 self-start space-y-6">
             <div>
-              <p className="text-gold text-xs uppercase tracking-widest mb-2">{collectionName}</p>
+              <p className="text-gold-ink text-xs uppercase tracking-widest mb-2">{collectionName}</p>
               <h1 className="font-serif text-4xl text-charcoal">{name}</h1>
             </div>
 

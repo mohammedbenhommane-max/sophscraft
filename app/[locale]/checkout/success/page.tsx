@@ -1,7 +1,9 @@
+import { setRequestLocale } from 'next-intl/server'
 import Link from 'next/link'
 import ClearCart from './ClearCart'
 
-export default async function SuccessPage() {
+export default async function SuccessPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   return (
     <div className="pt-16 min-h-screen flex items-center justify-center bg-cream">
       <ClearCart />

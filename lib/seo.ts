@@ -66,3 +66,11 @@ export function staticPageMetadata(locale: string, path: string, title?: string)
 export function cleanProductName(name: string) {
   return name.split(' | ')[0].trim()
 }
+
+// Texte brut d'une description Sanity (Portable Text), pour Google et les flux produits
+export function portableTextToPlain(blocks?: { children?: { text?: string }[] }[]) {
+  return (blocks ?? [])
+    .map((block) => (block.children ?? []).map((child) => child.text ?? '').join(''))
+    .join('\n\n')
+    .trim()
+}

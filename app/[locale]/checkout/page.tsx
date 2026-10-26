@@ -1,4 +1,4 @@
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import CheckoutForm from './CheckoutForm'
 
@@ -6,7 +6,8 @@ export async function generateMetadata(): Promise<Metadata> {
   return { title: 'Checkout' }
 }
 
-export default async function CheckoutPage() {
+export default async function CheckoutPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   const t = await getTranslations('checkout')
 
   return (

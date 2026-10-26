@@ -15,7 +15,8 @@ type Product = {
   isSoldOut: boolean
 }
 
-export default function ProductCard({ product }: { product: Product }) {
+// `priority` : à activer pour les cartes visibles dès l'ouverture de la page (photo chargée en premier)
+export default function ProductCard({ product, priority = false }: { product: Product; priority?: boolean }) {
   const t = useTranslations('product')
   const locale = useLocale()
   const { dispatch } = useCart()
@@ -48,6 +49,7 @@ export default function ProductCard({ product }: { product: Product }) {
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            priority={priority}
           />
         ) : (
           <div className="w-full h-full bg-beige flex items-center justify-center">
@@ -80,7 +82,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
       {/* Info */}
       <div className="mt-3 space-y-0.5">
-        <h3 className="font-serif text-base text-charcoal group-hover:text-gold transition-colors">{name}</h3>
+        <h2 className="font-serif text-base text-charcoal group-hover:text-gold transition-colors">{name}</h2>
         <p className="text-sm text-muted">{product.price.toFixed(2)} €</p>
       </div>
     </Link>

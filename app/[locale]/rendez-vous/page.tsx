@@ -1,20 +1,21 @@
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params
   return staticPageMetadata(locale, '/rendez-vous', 'Rendez-vous')
 }
 
-export default async function RendezVousPage() {
+export default async function RendezVousPage({ params }: { params: Promise<{ locale: string }> }) {
+  setRequestLocale((await params).locale)
   const t = await getTranslations('appointment')
 
   return (
     <div className="pt-16 min-h-screen">
       <div className="bg-beige/40 py-20 px-4 text-center">
-        <p className="text-gold text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
+        <p className="text-gold-ink text-xs uppercase tracking-[0.3em] mb-3">{t('tag')}</p>
         <h1 className="font-serif text-5xl text-charcoal mb-6">{t('title')}</h1>
         <p className="text-muted text-sm max-w-md mx-auto leading-relaxed">{t('subtitle')}</p>
       </div>
@@ -56,7 +57,7 @@ export default async function RendezVousPage() {
         </div>
 
         <div className="text-center bg-beige/40 py-14 px-6">
-          <p className="text-gold text-xs uppercase tracking-widest mb-3">{t('ctaTag')}</p>
+          <p className="text-gold-ink text-xs uppercase tracking-widest mb-3">{t('ctaTag')}</p>
           <h3 className="font-serif text-3xl text-charcoal mb-6">{t('ctaTitle')}</h3>
           <p className="text-muted text-sm mb-8 max-w-sm mx-auto">{t('ctaText')}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

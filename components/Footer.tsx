@@ -11,13 +11,13 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand */}
           <div>
-            <h3 className="font-serif text-2xl text-cream mb-3">SophsCraft</h3>
+            <p className="font-serif text-2xl text-cream mb-3">SophsCraft</p>
             <p className="text-sm text-cream/60 leading-relaxed">{t('tagline')}</p>
           </div>
 
           {/* Navigation */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-gold mb-4">{t('navigation')}</h4>
+            <h2 className="text-xs uppercase tracking-widest text-gold mb-4">{t('navigation')}</h2>
             <ul className="space-y-2 text-sm text-cream/70">
               {['collections', 'sur-mesure', 'rendez-vous', 'blog', 'contact'].map((path) => (
                 <li key={path}>
@@ -31,7 +31,7 @@ export default function Footer() {
 
           {/* Légal + Réseaux */}
           <div>
-            <h4 className="text-xs uppercase tracking-widest text-gold mb-4">{t('legalHeading')}</h4>
+            <h2 className="text-xs uppercase tracking-widest text-gold mb-4">{t('legalHeading')}</h2>
             <ul className="space-y-2 text-sm text-cream/70 mb-6">
               <li><Link href="/legal" className="hover:text-gold transition-colors">{t('legal')}</Link></li>
               <li><Link href="/privacy" className="hover:text-gold transition-colors">{t('privacy')}</Link></li>
@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-cream/10 text-center text-xs text-cream/40">
+        <div className="mt-12 pt-6 border-t border-cream/10 text-center text-xs text-cream/60">
           © {new Date().getFullYear()} SophsCraft — {t('rights')}
         </div>
       </div>
