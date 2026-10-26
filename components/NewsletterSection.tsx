@@ -2,10 +2,13 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import HoneypotField from '@/components/HoneypotField'
 
 export default function NewsletterSection() {
   const t = useTranslations('home.newsletter')
   const [email, setEmail] = useState('')
+  const [website, setWebsite] = useState('')
+  const [startedAt] = useState(() => Date.now())
   const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
 
   async function handleSubmit(e: React.FormEvent) {
@@ -16,7 +19,7 @@ export default function NewsletterSection() {
       await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, website, startedAt }),
       })
       setStatus('success')
       setEmail('')
@@ -35,7 +38,8 @@ export default function NewsletterSection() {
         {status === 'success' ? (
           <p className="text-gold text-sm">{t('success')}</p>
         ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleSubmit} className="relative flex flex-col sm:flex-row gap-3">
+            <HoneypotField value={website} onChange={(e) => setWebsite(e.target.value)} />
             <input
               type="email"
               value={email}

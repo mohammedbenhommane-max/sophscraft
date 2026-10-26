@@ -1,12 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
+import { isBot, isEmail } from '@/lib/forms'
 
 const resend = new Resend(process.env.RESEND_API_KEY ?? 'placeholder')
 
 export async function POST(req: NextRequest) {
-  const { email } = await req.json()
+  const body = await req.json()
+  const { email } = body
 
-  if (!email) {
+  // Robot : on répond OK sans rien faire pour ne pas lui signaler le blocage
+  if (isBot(body)) {
+    return NextResponse.json({ ok: true })
+  }
+
+  if (!isEmail(email)) {
     return NextResponse.json({ error: 'Email requis' }, { status: 400 })
   }
 

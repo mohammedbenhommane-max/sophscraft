@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useTranslations } from 'next-intl'
+import HoneypotField from '@/components/HoneypotField'
 
 type Status = 'idle' | 'loading' | 'success' | 'error'
 
@@ -17,7 +18,9 @@ export default function CustomOrderForm() {
     budget: '',
     materials: '',
     description: '',
+    website: '',
   })
+  const [startedAt] = useState(() => Date.now())
 
   const JEWELRY_TYPES = t.raw('types') as string[]
   const BUDGETS = t.raw('budgets') as string[]
@@ -35,7 +38,7 @@ export default function CustomOrderForm() {
     const res = await fetch('/api/custom-order', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form),
+      body: JSON.stringify({ ...form, startedAt }),
     })
 
     setStatus(res.ok ? 'success' : 'error')
@@ -54,7 +57,8 @@ export default function CustomOrderForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="relative space-y-6">
+      <HoneypotField value={form.website} onChange={handleChange} />
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div>
           <label className="block text-xs uppercase tracking-widest text-muted mb-2">{t('nameField')} *</label>
