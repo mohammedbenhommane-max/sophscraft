@@ -95,8 +95,11 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret })
   } catch (err) {
+    // Le détail reste dans les logs Vercel : le client ne voit qu'un message générique
     console.error('[checkout/intent]', err)
-    const message = err instanceof Error ? err.message : 'Internal error'
-    return NextResponse.json({ error: message }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Le paiement est momentanément indisponible. Veuillez réessayer dans quelques minutes.' },
+      { status: 500 }
+    )
   }
 }
