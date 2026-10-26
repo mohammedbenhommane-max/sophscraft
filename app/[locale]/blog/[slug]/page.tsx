@@ -7,7 +7,7 @@ import { PortableText } from '@portabletext/react'
 import { getBlogPostBySlug } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 
-type Props = { params: { slug: string; locale: string } }
+type Props = { params: Promise<{ slug: string; locale: string }> }
 
 function formatDate(dateStr: string, locale: string) {
   return new Date(dateStr).toLocaleDateString(locale === 'en' ? 'en-GB' : 'fr-FR', {
@@ -17,7 +17,8 @@ function formatDate(dateStr: string, locale: string) {
   })
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {
+  const params = await paramsPromise
   const post = await getBlogPostBySlug(params.slug)
   if (!post) return { title: 'Article introuvable' }
   const title = params.locale === 'en' ? post.titleEN : post.titleFR
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function BlogPostPage({ params }: Props) {
+export default async function BlogPostPage({ params: paramsPromise }: Props) {
+  const params = await paramsPromise
   const { slug, locale } = params
   const [post, t] = await Promise.all([getBlogPostBySlug(slug), getTranslations('blog')])
   if (!post) notFound()

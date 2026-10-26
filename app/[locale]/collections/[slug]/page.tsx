@@ -6,10 +6,11 @@ import { urlFor } from '@/lib/sanity/image'
 import CollectionFilter from '@/components/CollectionFilter'
 
 type Props = {
-  params: { slug: string; locale: string }
+  params: Promise<{ slug: string; locale: string }>
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {
+  const params = await paramsPromise
   const [collection, products] = await Promise.all([
     getCollectionBySlug(params.slug),
     getProductsByCollection(params.slug),
@@ -42,7 +43,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function CollectionPage({ params }: Props) {
+export default async function CollectionPage({ params: paramsPromise }: Props) {
+  const params = await paramsPromise
   const { slug, locale } = params
   const t = await getTranslations('collections')
 

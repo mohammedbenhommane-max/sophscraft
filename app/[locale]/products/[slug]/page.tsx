@@ -10,10 +10,11 @@ import { cleanProductName } from '@/lib/seo'
 import AddToCartButton from './AddToCartButton'
 
 type Props = {
-  params: { slug: string; locale: string }
+  params: Promise<{ slug: string; locale: string }>
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {
+  const params = await paramsPromise
   const product = await getProductBySlug(params.slug)
   if (!product) return { title: 'Produit introuvable' }
   const name = cleanProductName(params.locale === 'en' ? product.nameEN : product.nameFR)
@@ -41,7 +42,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function ProductPage({ params }: Props) {
+export default async function ProductPage({ params: paramsPromise }: Props) {
+  const params = await paramsPromise
   const { slug, locale } = params
   const t = await getTranslations('product')
 

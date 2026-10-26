@@ -3,7 +3,8 @@ import { staticPageMetadata } from '@/lib/seo'
 import Link from 'next/link'
 import { getTranslations } from 'next-intl/server'
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
   return staticPageMetadata(locale, '/rendez-vous', 'Rendez-vous')
 }
 

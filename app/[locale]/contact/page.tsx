@@ -3,7 +3,8 @@ import { staticPageMetadata } from '@/lib/seo'
 import { getTranslations } from 'next-intl/server'
 import ContactForm from './ContactForm'
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
   return staticPageMetadata(locale, '/contact', 'Contact')
 }
 

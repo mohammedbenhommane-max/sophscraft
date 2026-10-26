@@ -9,7 +9,8 @@ import CartSidebar from '@/components/CartSidebar'
 
 const locales = ['fr', 'en']
 
-export async function generateMetadata({ params: { locale } }: { params: { locale: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params
   return {
     ...staticPageMetadata(locale, ''),
     ...(locale === 'en' && { title: { absolute: 'SophsCraft — Handmade artisan jewelry', template: '%s | SophsCraft' } }),
@@ -18,11 +19,12 @@ export async function generateMetadata({ params: { locale } }: { params: { local
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode
-  params: { locale: string }
+  params: Promise<{ locale: string }>
 }) {
+  const { locale } = await params
   if (!locales.includes(locale)) notFound()
 
   const messages = await getMessages()
