@@ -42,7 +42,7 @@ export default function ProductCard({ product, priority = false }: { product: Pr
     <Link href={`/products/${product.slug}`} className="group block">
       {/* Image container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-beige rounded-sm">
-        {image ? (
+        {image && (
           <Image
             src={image}
             alt={name}
@@ -51,7 +51,18 @@ export default function ProductCard({ product, priority = false }: { product: Pr
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
           />
-        ) : (
+        )}
+        {/* Au survol : affiche la 2e photo si elle existe */}
+        {image && product.images[1] && (
+          <Image
+            src={product.images[1]}
+            alt=""
+            fill
+            className="object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+          />
+        )}
+        {!image && (
           <div className="w-full h-full bg-beige flex items-center justify-center">
             <svg className="w-8 h-8 text-gold-light" fill="none" stroke="currentColor" strokeWidth={1} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />

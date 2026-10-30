@@ -1,5 +1,4 @@
 import { notFound } from 'next/navigation'
-import Image from 'next/image'
 import Link from 'next/link'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
@@ -9,6 +8,7 @@ import { urlFor } from '@/lib/sanity/image'
 import { cleanProductName, portableTextToPlain } from '@/lib/seo'
 import { merchantReturnPolicy, offerShippingDetails } from '@/lib/shop'
 import AddToCartButton from './AddToCartButton'
+import ProductGallery from './ProductGallery'
 
 // Page mise en cache, régénérée au plus toutes les 60 s (contenu Sanity)
 export const revalidate = 60
@@ -131,20 +131,7 @@ export default async function ProductPage({ params: paramsPromise }: Props) {
           {/* Galerie */}
           <div className="space-y-4">
             {imageUrls.length > 0 ? (
-              <>
-                <div className="relative aspect-square overflow-hidden bg-beige rounded-sm">
-                  <Image src={imageUrls[0]} alt={name} fill className="object-cover" priority sizes="(max-width: 1024px) 100vw, 50vw" />
-                </div>
-                {imageUrls.length > 1 && (
-                  <div className="grid grid-cols-4 gap-2">
-                    {imageUrls.slice(1).map((img, i) => (
-                      <div key={i} className="relative aspect-square overflow-hidden bg-beige rounded-sm">
-                        <Image src={img} alt={`${name} ${i + 2}`} fill className="object-cover" sizes="25vw" />
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
+              <ProductGallery images={imageUrls} name={name} />
             ) : (
               <div className="aspect-square bg-beige rounded-sm flex items-center justify-center">
                 <svg className="w-16 h-16 text-gold-light" fill="none" stroke="currentColor" strokeWidth={0.5} viewBox="0 0 24 24">
