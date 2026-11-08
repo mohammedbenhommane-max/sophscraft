@@ -56,7 +56,8 @@
     "description": "Description",
     "backToCollection": "Retour à la collection",
     "delivery": "Livraison offerte en Europe sous 3-4 jours ouvrés",
-    "handmade": "Pièce artisanale faite main, unique"
+    "handmade": "Pièce artisanale faite main, unique",
+    "related": "Vous aimerez aussi"
   },
   "cart": {
     "title": "Votre panier",

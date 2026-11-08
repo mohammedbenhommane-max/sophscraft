@@ -3,10 +3,11 @@ import Link from 'next/link'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import type { Metadata } from 'next'
 import { PortableText } from '@portabletext/react'
-import { getProductBySlug } from '@/lib/sanity/queries'
+import { getProductBySlug, getProductsByCollection } from '@/lib/sanity/queries'
 import { urlFor } from '@/lib/sanity/image'
 import { cleanProductName, portableTextToPlain } from '@/lib/seo'
 import { merchantReturnPolicy, offerShippingDetails } from '@/lib/shop'
+import ProductCard from '@/components/ProductCard'
 import AddToCartButton from './AddToCartButton'
 import ProductGallery from './ProductGallery'
 
@@ -65,6 +66,22 @@ export default async function ProductPage({ params: paramsPromise }: Props) {
   const imageUrls = product.images?.map((img) => urlFor(img).width(900).url()) ?? []
   const collectionSlug = product.collection?.slug ?? ''
   const collectionName = locale === 'en' ? product.collection?.nameEN : product.collection?.nameFR
+
+  // Les 4 produits suivants de la collection : chaque fiche reçoit ainsi des liens depuis d'autres fiches
+  const siblings = collectionSlug ? await getProductsByCollection(collectionSlug) : []
+  const position = siblings.findIndex((p) => p.slug === product.slug)
+  const related = [...siblings.slice(position + 1), ...siblings.slice(0, position)]
+    .filter((p) => !p.isSoldOut)
+    .slice(0, 4)
+    .map((p) => ({
+      id: p._id,
+      slug: p.slug,
+      nameFR: p.nameFR,
+      nameEN: p.nameEN,
+      price: p.price,
+      images: p.images?.map((img) => urlFor(img).width(600).url()) ?? [],
+      isSoldOut: p.isSoldOut,
+    }))
 
   const cartProduct = {
     id: product._id,
@@ -189,6 +206,17 @@ export default async function ProductPage({ params: paramsPromise }: Props) {
             </div>
           </div>
         </div>
+
+        {related.length > 0 && (
+          <section className="mt-20 border-t border-beige pt-12">
+            <h2 className="font-serif text-2xl text-charcoal mb-8">{t('related')}</h2>
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
+              {related.map((p) => (
+                <ProductCard key={p.id} product={p} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   )

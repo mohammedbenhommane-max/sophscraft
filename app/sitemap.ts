@@ -24,13 +24,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ].flatMap((path) => [
     {
       url: `${BASE_URL}${path}`,
-      lastModified: new Date(),
       priority: path === '' ? 1 : 0.8,
       alternates: { languages: { fr: `${BASE_URL}${path}`, en: `${BASE_URL}/en${path}` } },
     },
     {
       url: `${BASE_URL}/en${path}`,
-      lastModified: new Date(),
       priority: path === '' ? 1 : 0.8,
       alternates: { languages: { fr: `${BASE_URL}${path}`, en: `${BASE_URL}/en${path}` } },
     },
@@ -41,14 +39,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return [
       {
         url: `${BASE_URL}/products/${p.slug}`,
-        lastModified: new Date(),
+        lastModified: new Date(p._updatedAt),
         priority: 0.9,
         alternates: { languages: { fr: `${BASE_URL}/products/${p.slug}`, en: `${BASE_URL}/en/products/${p.slug}` } },
         ...(images.length > 0 && { images }),
       },
       {
         url: `${BASE_URL}/en/products/${p.slug}`,
-        lastModified: new Date(),
+        lastModified: new Date(p._updatedAt),
         priority: 0.9,
         alternates: { languages: { fr: `${BASE_URL}/products/${p.slug}`, en: `${BASE_URL}/en/products/${p.slug}` } },
         ...(images.length > 0 && { images }),
@@ -59,13 +57,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const collectionPages = collections.flatMap((c) => [
     {
       url: `${BASE_URL}/collections/${c.slug}`,
-      lastModified: new Date(),
+      lastModified: new Date(c._updatedAt),
       priority: 0.8,
       alternates: { languages: { fr: `${BASE_URL}/collections/${c.slug}`, en: `${BASE_URL}/en/collections/${c.slug}` } },
     },
     {
       url: `${BASE_URL}/en/collections/${c.slug}`,
-      lastModified: new Date(),
+      lastModified: new Date(c._updatedAt),
       priority: 0.8,
       alternates: { languages: { fr: `${BASE_URL}/collections/${c.slug}`, en: `${BASE_URL}/en/collections/${c.slug}` } },
     },

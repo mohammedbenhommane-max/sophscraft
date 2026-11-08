@@ -3,6 +3,14 @@ import { shopifyRedirects } from './shopify-redirects.mjs'
 
 const withNextIntl = createNextIntlPlugin('./i18n.ts')
 
+// L'adresse technique Vercel renvoie vers le vrai domaine, pour éviter un doublon dans Google.
+// /api, /studio et /_next restent accessibles : webhooks et Studio peuvent encore passer par elle.
+const vercelHost = [{ type: 'host', value: 'sophscraft.vercel.app' }]
+const vercelRedirects = [
+  { source: '/', has: vercelHost, destination: 'https://www.sophscraft.com/', permanent: true },
+  { source: '/:path((?!api/|studio|_next/).+)', has: vercelHost, destination: 'https://www.sophscraft.com/:path', permanent: true },
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
@@ -14,7 +22,7 @@ const nextConfig = {
   },
   poweredByHeader: false,
   async redirects() {
-    return shopifyRedirects
+    return [...vercelRedirects, ...shopifyRedirects]
   },
   async headers() {
     return [

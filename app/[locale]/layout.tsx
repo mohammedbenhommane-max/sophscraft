@@ -37,6 +37,8 @@ export default async function LocaleLayout({
 
   return (
     <NextIntlClientProvider locale={locale} messages={messages}>
+      {/* La balise <html> est dans le layout racine, qui ne connaît pas la langue */}
+      {locale === 'en' && <script dangerouslySetInnerHTML={{ __html: "document.documentElement.lang='en'" }} />}
       <CartProvider>
         <Header />
         <CartSidebar />

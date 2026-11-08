@@ -56,7 +56,8 @@
     "description": "Description",
     "backToCollection": "Back to collection",
     "delivery": "Free shipping across Europe in 3-4 business days",
-    "handmade": "Handcrafted artisan piece, unique"
+    "handmade": "Handcrafted artisan piece, unique",
+    "related": "You may also like"
   },
   "cart": {
     "title": "Your cart",

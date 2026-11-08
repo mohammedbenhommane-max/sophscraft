@@ -4,6 +4,7 @@ import type { SanityProduct, SanityCollection, SanityBlogPost } from './types'
 // Champs communs aux listes de produits
 const PRODUCT_FIELDS = `
   _id,
+  _updatedAt,
   "slug": slug.current,
   nameFR,
   nameEN,
@@ -25,6 +26,7 @@ const PRODUCT_DETAIL_FIELDS = `
 
 const COLLECTION_FIELDS = `
   _id,
+  _updatedAt,
   "slug": slug.current,
   nameFR,
   nameEN,

@@ -6,6 +6,7 @@ export type SanityImage = {
 
 export type SanityCollection = {
   _id: string
+  _updatedAt: string
   slug: string
   nameFR: string
   nameEN: string
@@ -21,6 +22,7 @@ export type SanityProductVariant = {
 
 export type SanityProduct = {
   _id: string
+  _updatedAt: string
   slug: string
   nameFR: string
   nameEN: string
