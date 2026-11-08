@@ -28,7 +28,7 @@ const DISCONTINUED_PRODUCTS = [
 ]
 
 const OLD_POSTS = {
-  'entretien-de-vos-bijoux-artisanaux-conseils-pour-preserver-leur-eclat': '/blog/entretien-bijoux-artisanau',
+  'entretien-de-vos-bijoux-artisanaux-conseils-pour-preserver-leur-eclat': '/blog/entretien-bijoux-artisanaux',
   'pourquoi-choisir-des-bijoux-faits-main-pour-vos-cadeaux-de-noel': '/blog/idees-cadeaux-bijoux',
   'offrez-des-bijoux-faits-main-pour-une-saint-valentin-inoubliable-a-lasne-et-dans-le-brabant-wallon':
     '/blog/idees-cadeaux-bijoux',
@@ -57,6 +57,10 @@ export const shopifyRedirects = [
     permanent(`/blogs/news/${slug}`, to),
     permanent(`/blogs/inspirations/${slug}`, to),
   ]),
+  // Ancienne adresse de l'article, créée avec une faute de frappe
+  permanent('/blog/entretien-bijoux-artisanau', '/blog/entretien-bijoux-artisanaux'),
+  permanent('/en/blog/entretien-bijoux-artisanau', '/en/blog/entretien-bijoux-artisanaux'),
+
   permanent('/blogs/:blog/:post', '/blog'),
   permanent('/blogs/:blog', '/blog'),
 
