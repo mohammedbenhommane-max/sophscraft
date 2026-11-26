@@ -72,10 +72,10 @@ export default async function AboutSection() {
                 <p className="text-xs uppercase tracking-widest text-muted mt-1">{t('stat2Label')}</p>
               </div>
               <div className="hidden sm:block w-px bg-beige" />
-              <div className="text-center sm:text-left">
-                <p className="font-serif text-3xl text-charcoal">5★</p>
-                <p className="text-xs uppercase tracking-widest text-muted mt-1">{t('stat3Label')}</p>
-              </div>
+              <a href={BUSINESS.mapsUrl} target="_blank" rel="noopener noreferrer" className="group text-center sm:text-left">
+                <p className="font-serif text-3xl text-charcoal group-hover:text-gold transition-colors">5/5</p>
+                <p className="text-xs uppercase tracking-widest text-muted mt-1 group-hover:text-gold transition-colors">{t('stat3Label')}</p>
+              </a>
             </div>
 
             <div className="mt-10">
