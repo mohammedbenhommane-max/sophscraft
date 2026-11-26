@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { useTranslations } from 'next-intl'
 import { SOCIAL_LINKS } from '@/lib/social'
+import { BUSINESS } from '@/lib/business'
 
 export default function Footer() {
   const t = useTranslations('footer')
@@ -13,6 +14,15 @@ export default function Footer() {
           <div>
             <p className="font-serif text-2xl text-cream mb-3">SophsCraft</p>
             <p className="text-sm text-cream/60 leading-relaxed">{t('tagline')}</p>
+            <address className="not-italic text-sm text-cream/60 leading-relaxed mt-4">
+              {BUSINESS.alternateName}
+              <br />
+              <a href={BUSINESS.mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                {BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}
+              </a>
+              <br />
+              <a href={`tel:${BUSINESS.phoneIntl}`} className="hover:text-gold transition-colors">{BUSINESS.phone}</a>
+            </address>
           </div>
 
           {/* Navigation */}

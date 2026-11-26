@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { getTranslations } from 'next-intl/server'
+import { BUSINESS, PRESS } from '@/lib/business'
 
 // Replace with your own photo at: /public/images/about.jpg
 const ABOUT_IMAGE = 'https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=800&q=80'
@@ -44,6 +45,21 @@ export default async function AboutSection() {
               <p>{t('p2')}</p>
               <p>{t('p3')}</p>
             </div>
+            <p className="mt-6 text-sm text-charcoal">
+              <span className="font-serif text-base">{BUSINESS.founder}</span>
+              <span className="text-muted"> — {t('founderRole')}</span>
+            </p>
+            <a
+              href={PRESS.leSoir}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-gold-ink hover:text-gold transition-colors"
+            >
+              {t('pressLeSoir')}
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+              </svg>
+            </a>
 
             <div className="mt-10 flex flex-col sm:flex-row gap-6">
               <div className="text-center sm:text-left">

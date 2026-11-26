@@ -97,13 +97,16 @@
     "stat1Label": "Créations uniques",
     "stat2Label": "Fait main",
     "stat3Label": "Avis clients",
-    "cta": "Créer mon bijou sur-mesure"
+    "cta": "Créer mon bijou sur-mesure",
+    "founderRole": "créatrice et fondatrice, ingénieure de formation",
+    "pressLeSoir": "Vu dans Le Soir"
   },
   "contact": {
     "tag": "Nous écrire",
     "title": "Contact",
     "subtitle": "Une question, une commande spéciale, un simple bonjour ? Nous vous répondons sous 24h.",
     "emailLabel": "Email",
+    "workshopLabel": "Atelier",
     "socialLabel": "Réseaux sociaux",
     "responseLabel": "Délai de réponse",
     "responseText": "Nous répondons à tous les messages sous 24 heures, du lundi au vendredi.",

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { staticPageMetadata } from '@/lib/seo'
 import { SOCIAL_LINKS } from '@/lib/social'
+import { BUSINESS } from '@/lib/business'
 import { getTranslations, setRequestLocale } from 'next-intl/server'
 import ContactForm from './ContactForm'
 
@@ -33,6 +34,18 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
               <a href="mailto:contact@sophscraft.com" className="text-sm text-charcoal hover:text-gold transition-colors">
                 contact@sophscraft.com
               </a>
+            </div>
+            <div>
+              <h3 className="text-xs uppercase tracking-widest text-gold mb-4">{t('workshopLabel')}</h3>
+              <address className="not-italic text-sm text-charcoal leading-relaxed">
+                {BUSINESS.alternateName}
+                <br />
+                <a href={BUSINESS.mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-gold transition-colors">
+                  {BUSINESS.street}, {BUSINESS.postalCode} {BUSINESS.city}
+                </a>
+                <br />
+                <a href={`tel:${BUSINESS.phoneIntl}`} className="hover:text-gold transition-colors">{BUSINESS.phone}</a>
+              </address>
             </div>
             <div>
               <h3 className="text-xs uppercase tracking-widest text-gold mb-4">{t('socialLabel')}</h3>

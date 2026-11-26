@@ -97,13 +97,16 @@
     "stat1Label": "Unique creations",
     "stat2Label": "Handmade",
     "stat3Label": "Customer reviews",
-    "cta": "Create my custom piece"
+    "cta": "Create my custom piece",
+    "founderRole": "designer and founder, engineer by training",
+    "pressLeSoir": "Featured in Le Soir"
   },
   "contact": {
     "tag": "Get in touch",
     "title": "Contact",
     "subtitle": "A question, a special order, or just a hello? We reply within 24 hours.",
     "emailLabel": "Email",
+    "workshopLabel": "Workshop",
     "socialLabel": "Social media",
     "responseLabel": "Response time",
     "responseText": "We reply to all messages within 24 hours, Monday to Friday.",
